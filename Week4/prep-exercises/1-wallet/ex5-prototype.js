@@ -1,8 +1,10 @@
-import eurosFormatter from './euroFormatter.js';
+import eurosFormatter from "./euroFormatter.js";
 
 function Wallet(name, cash) {
   this._name = name;
   this._cash = cash;
+  this._dailyAllowance = 40;
+  this._dayTotalWithdrawals = 0;
 }
 
 Wallet.prototype.deposit = function (amount) {
@@ -29,6 +31,14 @@ Wallet.prototype.transferInto = function (wallet, amount) {
   wallet.deposit(withdrawnAmount);
 };
 
+Wallet.prototype.setDailyAllowance = function (newAllowance) {
+  this._dailyAllowance = newAllowance;
+  console.log(`Daily allowance set to: ${eurosFormatter.format(newAllowance)}`);
+};
+
+Wallet.prototype.resetDailyAllowance = function () {
+  this._dayTotalWithdrawals = 0;
+};
 Wallet.prototype.reportBalance = function () {
   console.log(
     `Name: ${this._name}, balance: ${eurosFormatter.format(this._cash)}`
@@ -40,9 +50,9 @@ Wallet.prototype.getName = function () {
 };
 
 function main() {
-  const walletJack = new Wallet('Jack', 100);
-  const walletJoe = new Wallet('Joe', 10);
-  const walletJane = new Wallet('Jane', 20);
+  const walletJack = new Wallet("Jack", 100);
+  const walletJoe = new Wallet("Joe", 10);
+  const walletJane = new Wallet("Jane", 20);
 
   walletJack.transferInto(walletJoe, 50);
   walletJane.transferInto(walletJoe, 25);
